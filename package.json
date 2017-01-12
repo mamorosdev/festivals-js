@@ -1,0 +1,10 @@
+{
+  "name"         : "festivalsJS",
+  "version"      : "0.0.1",
+  "description"  : "Aplicació web Festivals.js",
+  "main"         : "server.js",
+  "author"       : "Miquel Àngel Amorós Alberich",
+  "dependencies" : {
+    "express"    : "~3.4.4"
+  }
+}
