@@ -1,0 +1,207 @@
+﻿<!doctype html>
+<html ng-app="MainApp" lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Festivals JS</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<script src="core.js"></script>
+	<style type="text/css">
+		td#info{
+			font-weight:bold;
+		}
+		.jumbotron {
+			padding-top:4px;
+			padding-bottom:4px;
+			margin-bottom: 4px;
+		}
+		.nav {
+			padding-bottom:0px;
+		}
+	</style>
+</head>
+<body ng-controller="mainController">
+	<div class="container">
+		<div class="jumbotron text-center" ng-prueba>
+			<h2>Festivals JS - {{ titolVista }}</h2>
+			<!-- <h3>{{ titolVista }}</h3> -->
+		</div>
+		<!-- Pagina inicial - llistat de concerts -->
+		<div class="row">
+			<div ng-switch="vista">
+			<div ng-switch-when="llista">
+			<ul class="nav nav-tabs">
+				<li><a href="" ng-click="pantalla('nou',1)">Nou concert</a></li> 
+				<li><a href="" ng-click="pantalla('com',2)">Com funciona?</a></li>
+			</ul>
+			<div class="col-sm-8">
+				<form name="form_filter">
+					<div class="form-group col-xs-8">
+						<p></p>
+						<p><label for="filtrePoblacio"> Població: </label>
+					    <select name="filtrePoblacio" id="filtrePoblacio" ng-model="filtreFestival.poblacio">
+					      <option ng-repeat="pob1 in poblacions" value="{{pob1.id}}">{{pob1.poblacio}}</option>
+					    </select></p>
+						<p><label for="filtreGratuits">Només concerts gratuïts </label>  
+						<input type="checkbox" id="filtreGratuits" ng-model="filtreFestival.gratuits"></input>
+						</p>
+						<p><label for="filtreData"> Que comencin a partir del dia...  </label>
+						<input type="date" id="filtreData" name="input" ng-model="filtreFestival.dataInici" 
+						placeholder="dd-MM-yyyy"></input></p>
+						<!-- Comptar número de registres opcional 
+						<p>Número de Festivals: <span class="label label-success">{{ festivals.length }}</span></p> 
+						-->
+					</div>
+					<div class="form-group col-xs-4">
+						<!-- Gestió botó opcional 
+						ng-disabled="!filtreFestival.gratuits && filtreFestival.poblacio=='0'" 
+						-->
+						<p></p><p></p>
+						<button type="button" class="btn btn-success btn-lg" 
+						ng-click="filterFestival(filtreFestival)">Cercar
+						</button>
+					</div>
+				</form>
+				<table class="table table-striped">
+					<thead class="info">
+						<th>Titol</th>
+						<th>Ubicacio</th>
+						<th>Concerts</th>
+						<th>Data inici</th>
+						<th>Gratuït?</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="festival in festivals" 
+							ng-click="selectFestival(festival)">
+							<td>{{ festival.titol }}</td>
+							<td>{{ festival.poblacio }}</td>
+							<td>{{ festival.concerts }}</td>
+							<td>{{ festival.dataInici }}</td>
+							<td ng-class="festival.preuGratuit ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-euro'"></td>
+						</tr>
+					</tbody>
+				</table>	
+				<!-- Paginació disponible pròximament -->
+				<div class="text-center">
+					<button class="btn btn-success btn-md" ng-click="mesFestivals()">
+				        Carregar més
+				    </button>
+    			</div>
+			</div>
+			<!-- Formulari intermig prescindible; pendent esborrarlo. -->
+			<div class="col-sm-4 text-center">
+				<form name="form_detall">
+					<div class="form-group">
+						<input type="hidden" ng-Model="detailFestival.id" readonly>
+						<input type="text" class="form-control input-mg text-center" placeholder="Titol" ng-model="detailFestival.titol" required readonly><br>
+						<input type="text" class="form-control input-mg text-center" placeholder="Poblacio" ng-model="detailFestival.poblacio" required readonly><br>
+						<input type="text" class="form-control input-mg text-center" placeholder="Ubicacio" ng-model="detailFestival.ubicacio" required readonly><br>
+						<input type="text" class="form-control input-mg text-center" placeholder="Data Inici" ng-model="detailFestival.dataInici" required readonly><br>
+						<input type="text" class="form-control input-mg text-center" placeholder="Concerts" ng-model="detailFestival.concerts" required readonly><br>
+						<textarea rows="5" class="form-control input-mg text-center" placeholder="Descripcio" ng-model="detailFestival.descripcio" required readonly></textarea><br>
+						<textarea rows="5" class="form-control input-mg text-center" placeholder="Contacte" ng-model="detailFestival.contacte" required readonly></textarea><br>
+						<input type="text" class="form-control input-mg text-center" placeholder="Preu" ng-model="detailFestival.preu" required readonly>
+						<input type="hidden" ng-model="detailFestival.dataFi" readonly>
+					</div>
+					<button type="button" class="btn btn-success btn-lg" ng-click="detallFestival()" ng-disabled="form_detall.$invalid">Detall</button>
+				</form>
+			</div>
+		</div>
+		<!-- Pagina edició concerts -->
+		<div ng-switch-when="nou">
+			<ul class="nav nav-tabs">
+				<li><a href="" ng-click="pantalla('llista',0)">Lista concerts</a> </li>
+				<li><a href="" ng-click="pantalla('com',2)">Com funciona?</a> </li>
+			</ul>
+			<div class="col-sm-12 text-center">
+				<form name="form_nou">
+					<div class="form-group">
+						<p>
+							<label>Títol</label>
+							<input type="text" class="form-control text-center" placeholder="Titol motivador per apuntar-se del festival" ng-model="newFestival.titol" required>
+						</p>
+						<p>
+							<label>Població</label>
+							<input type="text" class="form-control text-center" placeholder="Població del festival" ng-model="newFestival.poblacio" required>
+						</p>
+						<p>
+							<label>Ubicació</label>
+							<input type="text" class="form-control text-center" placeholder="Lloc del festival" ng-model="newFestival.ubicacio" required>
+						</p>
+						<p>
+							<label>Concerts</label>
+							<input type="text" class="form-control text-center" placeholder="Llista de concerts" ng-model="newFestival.concerts" required>
+						</p>
+						<p>
+							<label>Data inici</label>
+							<input id="newDataInici" type="date" class="form-control text-center" ng-model="newFestival.dataInici" required>
+							<label>Hora inici</label>
+							<input type="text" class="form-control text-center" placeholder="23:00" ng-model="newFestival.horaInici" required>
+							<label>Data fi</label>
+							<input id="newDataFi" type="date" class="form-control text-center" placeholder="dd/MM/YYYY" ng-model="newFestival.dataFi">
+						</p>
+						<p>
+							<label>Informació</label>
+							<input type="text" class="form-control text-center" placeholder="Inserir un enllaç amb informació oficial del festival/concert." ng-model="newFestival.informacio"><br>
+						</p>
+						<p>
+							<label>Descripció</label>
+							<textarea rows="5" class="form-control text-center" 
+								placeholder="Explica amb més detall on, quan i com trobar-te amb els assistents abans del festival." ng-model="newFestival.descripcio" required></textarea><br>
+						</p>
+						<p>
+							<label>Contacte</label>
+							<textarea rows="5" class="form-control text-center" 
+								placeholder="Si vols, indica el mitjà que et vagi millor per contactar amb els assistents (whatsapp, email, facebook...)" ng-model="newFestival.contacte" required></textarea><br>
+						</p>
+						<p>
+							<label>Preu</label>
+							<input type="text" class="form-control text-center" placeholder="Preu" ng-model="newFestival.preu" required>
+						</p>
+					</div>
+					<input type="hidden" ng-Model="newFestival.id" readonly>
+					<button type="submit" class="btn btn-success btn-lg" ng-show="saveOrUpdate=='save'" ng-click="crearFestival()" ng-disabled="form_nou.$invalid">Crear</button>
+					<button type="submit" class="btn btn-success btn-lg" ng-show="saveOrUpdate=='update'" ng-click="editarFestival(newFestival.id)" ng-disabled="form_nou.$invalid">Editar</button>
+					<button type="submit" class="btn btn-danger btn-lg" ng-show="saveOrUpdate=='update'" ng-click="anularFestival(newFestival.id)" ng-disabled="form_nou.$invalid">Anular</button>
+				</form>
+			</div>
+		</div>
+		<!-- Pagina informativa sobre el projecte. -->
+		<div ng-switch-when="com">
+			<ul class="nav nav-tabs">
+				<li><a href="" ng-click="pantalla('llista',0)">Lista concerts</a></li>
+				<li><a href="" ng-click="pantalla('nou',1)">Nou concert</a></li>
+			</ul>
+			<div class="col-sm-12">
+				<p>Festivals.js és un projecte de final del Màster d'Enginyeria Informàtica de la UOC.</p>
+				<p>Consisteix en crear i desenvolupar l'arquitectura d'una aplicació web; en aquest cas, per trobar gent amb qui gaudir de concerts, amb Node.js</p>
+				<p>En aquesta versió beta tothom pot afegir, consultar, modificar i eliminar qualsevol festival. Depèn de  factors personals i/o professionals que millori aquest projecte.</p>
+				<p>L'autor, <strong>Miquel Àngel Amorós Alberich</strong>, no es fa responsable cas dels problemes ocasionats en cas d'error en les dades dels esdeveniments i els resultats de l'ús del programari. </p>
+				<p>El projecte Festivals.js està subjecte a una llicència de <a href="https://creativecommons.org/licenses/by/3.0/es/">Creative Commons</a></p> 
+			</div>
+		</div>
+		<!-- Funcionalitats futures -->
+		<div ng-switch-when="reg">
+			<ul class="nav nav-tabs">
+				<li><a href="" ng-click="pantalla('llista',0)">Lista concerts</a></li>
+				<li><a href="" ng-click="pantalla('nou',1)">Nou concert</a></li>
+				<li><a href="" ng-click="pantalla('com',2)">Com funciona?</a></li>
+			</ul>
+			<div class="col-sm-12">
+				<p>Registre a la comunitat :) Nom d'usuari, contrassenya...</p> 
+			</div>
+		</div>
+		<div ng-switch-when="per">class="btn btn-success btn-md" 
+			<ul class="nav nav-tabs">
+				<li><a href="" ng-click="pantalla('llista',0)">Lista concerts</a></li>
+			</ul>
+			<div class="col-sm-12">
+				<p>Pefil dins la comunitat :)</p>
+				<p>Llista de concerts on t'has apuntat</p>
+				<p>Llista de concerts que has organitztat</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
