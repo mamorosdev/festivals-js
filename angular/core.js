@@ -3,9 +3,9 @@ angular.module('MainApp', [])
 function mainController($scope, $http) {
 	// Variables de navegació
 	var titolsLlista = [
-		"Llista de festivals","Afegir nou festivals","Com funciona festivals.js?"];
+		"Llista festivals","Nou festival","Com funciona?"];
 	$scope.vista = "llista";
-	$scope.titolVista = "Llista de concerts";
+	$scope.titolVista = "Llista festivals";
 
 	// Variables amb dades d'un festival.	
 	$scope.newFestival = {};
@@ -123,11 +123,8 @@ function mainController($scope, $http) {
 	
 	// Función para editar los datos de un festival.
 	$scope.editarFestival = function(newFestival) {
-		console.log("Creant Festival"+$scope.newFestival.dataInici);
-		console.log("Creant Festival"+$scope.newFestival.Fi);
+		console.log("Editant Festival"+$scope.newFestival.dataInici);
 		$scope.newFestival=saveDatesFestival($scope.newFestival,$scope.newFestival.dataInici,$scope.newFestival.dataFi);
-		console.log("Creant Festival 2"+$scope.newFestival.dataInici);
-		console.log("Creant Festival 2"+$scope.newFestival.Fi);
 
 		$http.put('/api/festivals/' + $scope.newFestival.id, $scope.newFestival)
 		.success(function(data) {		
@@ -158,10 +155,7 @@ function mainController($scope, $http) {
 	// Funció que crea un nou festival a partir de les dades omplertes al formulari.
 	$scope.crearFestival = function() {
 		console.log("Creant Festival"+$scope.newFestival.dataInici);
-		console.log("Creant Festival"+$scope.newFestival.Fi);
 		$scope.newFestival=saveDatesFestival($scope.newFestival,$scope.newFestival.dataInici,$scope.newFestival.dataFi);
-		console.log("Creant Festival 2"+$scope.newFestival.dataInici);
-		console.log("Creant Festival 2"+$scope.newFestival.Fi);
 		$http.post('/api/festivals',$scope.newFestival)
 		.success(function(data) {
 			console.log("crearFestival-success");
@@ -260,10 +254,13 @@ function mainController($scope, $http) {
 	// Tractar '0' sobrants (hour < 10) ? '0' + hour: hour) + ':'
 	function saveDateFestival(date) {
 		var filteredDate = date.split('-');
-		var day = parseInt(filteredDate[2])>10?filteredDate[2]:'0'+filteredDate[2];
-		var month1 = parseInt(filteredDate[1])++;
-		var month =  month1>10?month1:'0'+month1;
-		var newDate = filteredDate[2]+"/"+(filteredDate[1]+1)+"/"+filteredDate[0];
+		console.log(filteredDate);
+		/* var day = parseInt(filteredDate[2])>10?filteredDate[2]:'0'+filteredDate[2];
+		console.log(day); */
+		/* var month1 = parseInt(filteredDate[1])++;
+		console.log(month1); */
+		// var month =  parseInt(filteredDate[1])>10?parseInt(filteredDate[1]):'0'+parseInt(filteredDate[1]);
+		var newDate = filteredDate[2]+"/"+(filteredDate[1])+"/"+filteredDate[0];
 		return newDate;
 	}
 	
