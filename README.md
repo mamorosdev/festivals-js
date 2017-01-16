@@ -35,5 +35,12 @@ S'han afegit les les 4 primeres funcionalitats, que tenen una prioritat màxima 
 * [15/01/17] Error validació data fi al crear/editar.
 * [16/01/17] Errors tipogràfics menus.
 
-#### Detectats
+#### Pendents
 * [15/01/17] Deshabilitar botó "Carrega +" quan no hi ha més elements.
+
+### Millores usabilitat pendents.
+
+* [16/01/17] Botó enrera.
+* [16/01/17] Textos més curts. 
+* [16/01/17] Menys camps??
+* [16/01/17] Eliminar secció intermitja abans del detall.
