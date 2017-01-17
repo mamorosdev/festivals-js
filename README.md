@@ -3,8 +3,9 @@ Festivals.js
 
 Festivals.js és el projecte de final del Màster d'Enginyeria Informàtica de la UOC.
 
-Consisteix en crear i desenvolupar l'arquitectura d'una aplicació web per trobar gent amb qui gaudir de concerts:
+Consisteix en crear i desenvolupar l'arquitectura d'una aplicació web per trobar gent amb qui gaudir de concerts.
 
+Allotjat a:
 https://festivals-js.herokuapp.com/
 
 ### Les tecnologies usades són:
@@ -29,18 +30,8 @@ S'han afegit les les 4 primeres funcionalitats, que tenen una prioritat màxima 
 * HU3. Com a visitant/usuari vull crear una trobada a un concert
 * HU4. I vull poder editar l'event abans que comenci
 
-### Bugs.
+### Bugs i millores.
 
-#### Corregits
-* [15/01/17] Error validació data fi al crear/editar.
-* [16/01/17] Errors tipogràfics menus.
+Per a gestionar els bugs i millores (usabilitat,evolutius) uso el gestor d'incidències de GitHub:
+https://github.com/mamorosdev/festivals-js-alpha2/issues 
 
-#### Pendents
-* [15/01/17] Deshabilitar botó "Carrega +" quan no hi ha més elements.
-
-### Millores usabilitat pendents.
-
-* [16/01/17] Botó enrera.
-* [16/01/17] Textos més curts. 
-* [16/01/17] Menys camps??
-* [16/01/17] Eliminar secció intermitja abans del detall.
