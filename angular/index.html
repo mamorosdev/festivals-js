@@ -78,7 +78,7 @@
 							<td>{{ festival.poblacio }}</td>
 							<td>{{ festival.concerts }}</td>
 							<td>{{ festival.dataInici }}</td>
-							<td ng-class="festival.preuGratuit ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-remove'"></td>
+							<td ng-class="festival.preuGratuit ? 'glyphicon glyphicon-ok' : 'glyphicon glyphicon-euro'"></td>
 						</tr>
 					</tbody>
 				</table>	
@@ -135,9 +135,9 @@
 						</p>
 						<p>
 							<label>Data inici</label>
-							<input id="newDataInici" type="date" class="form-control text-center" ng-model="newFestival.dataInici" required>
+							<input id="newDataInici" type="date" class="form-control text-center" ng-model="newFestival.dataInici" placeholder="dd/MM/YYYY">
 							<label>Hora inici</label>
-							<input type="text" class="form-control text-center" placeholder="23:00" ng-model="newFestival.horaInici" required>
+							<input type="text" class="form-control text-center" placeholder="00:00" ng-model="newFestival.horaInici">
 							<label>Data fi</label>
 							<input id="newDataFi" type="date" class="form-control text-center" placeholder="dd/MM/YYYY" ng-model="newFestival.dataFi">
 						</p>
@@ -178,8 +178,7 @@
 				<p>Consisteix en crear i desenvolupar l'arquitectura d'una aplicació web; en aquest cas, per trobar gent amb qui gaudir de concerts, amb Node.js</p>
 				<p>En aquesta versió beta tothom pot afegir, consultar, modificar i eliminar qualsevol festival. Depèn de  factors personals i/o professionals que millori aquest projecte.</p>
 				<p>L'autor, <strong>Miquel Àngel Amorós Alberich</strong>, no es fa responsable cas dels problemes ocasionats en cas d'error en les dades dels esdeveniments i els resultats de l'ús del programari. </p>
-				<p>Podeu trobar el codi font al repostori GITHUB <a href="https://github.com/mamorosdev/festivals-js-alpha2"> festivals-js-alpha2 </a></p>
-				<!-- <p>El projecte Festivals.js està subjecte a una llicència de <a href="https://creativecommons.org/licenses/by/3.0/es/">Creative Commons</a></p> -->
+				<p>El projecte Festivals.js està subjecte a una llicència de <a href="https://creativecommons.org/licenses/by/3.0/es/">Creative Commons</a></p> 
 			</div>
 		</div>
 		<!-- Funcionalitats futures -->
@@ -190,19 +189,17 @@
 				<li><a href="" ng-click="pantalla('com',2)">Com funciona?</a></li>
 			</ul>
 			<div class="col-sm-12">
-				<p>Festivals.js és un projecte de final del Màster d'Enginyeria Informàtica de la UOC.</p>
-				<p>Consisteix en crear i desenvolupar l'arquitectura d'una aplicació web per trobar gent amb qui gaudir de concerts, amb Node.js</p>
-				<p>Es un projecte creat per Miquel Àngel Amorós Alberich.</p> 
+				<p>Registre a la comunitat :) Nom d'usuari, contrassenya...</p> 
 			</div>
 		</div>
-		<div ng-switch-when="per">
+		<div ng-switch-when="per">class="btn btn-success btn-md" 
 			<ul class="nav nav-tabs">
 				<li><a href="" ng-click="pantalla('llista',0)">Lista concerts</a></li>
 			</ul>
 			<div class="col-sm-12">
-				<p>Festivals.js és un projecte de final del Màster d'Enginyeria Informàtica de la UOC.</p>
-				<p>Consisteix en crear i desenvolupar l'arquitectura d'una aplicació web per trobar gent amb qui gaudir de concerts, amb Node.js</p>
-				<p>Es un projecte creat per Miquel Àngel Amorós Alberich.</p> 
+				<p>Pefil dins la comunitat :)</p>
+				<p>Llista de concerts on t'has apuntat</p>
+				<p>Llista de concerts que has organitztat</p>
 			</div>
 		</div>
 	</div>

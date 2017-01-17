@@ -38,7 +38,6 @@ exports.deleteFestival = function(req, res){
 	console.log("deleteFestival="+req.body);
 	var festival = req.body;
 	var festivalId = req.body.id -1;
-	// console.log("id="+last_id);
 	// Remove 1 element from festivalsJSON array, index festivalId
 	var removed = festivalsJSON.splice(festivalId, 1);
 	var festivalsString = JSON.stringify(festivalsJSON);

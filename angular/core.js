@@ -3,9 +3,9 @@ angular.module('MainApp', [])
 function mainController($scope, $http) {
 	// Variables de navegació
 	var titolsLlista = [
-		"Llista festivals","Nou festival","Com funciona?"];
+		"Llista de festivals","Nou festival","Com funciona?"];
 	$scope.vista = "llista";
-	$scope.titolVista = "Llista festivals";
+	$scope.titolVista = "Llista de concerts";
 
 	// Variables amb dades d'un festival.	
 	$scope.newFestival = {};
@@ -19,13 +19,7 @@ function mainController($scope, $http) {
 
 	$scope.poblacions = [];
 
-	// Paginacio: Disponible proximament.
-	// Paginació llista de festivals.
-	/* 
-	$scope.currentPage = 0;
-    $scope.pageSize = 5;
-    $scope.sliceFinal = 1;
-    $scope.sliceIni = 0; */
+	// Paginacio
     $scope.paginaActual = 0;
     $scope.numRegsPagina = 5;
 
@@ -37,21 +31,15 @@ function mainController($scope, $http) {
 	$scope.selected = false;
 
 	// Carreguem els N primers festivals de la base de dades a l'iniciar la sessió.
-	$http.get('/api/festivals').success(function(data) {
+	$http.get('/api/festivals')
+		.success(function(data) { getFestivalsSuccess(data); })
+		.error(getFestivalsError());
+
+	function getFestivalsSuccess(data) {
 		console.log("$http.get('/api/festivals')");
 		$scope.festivalsInici = data;
 		$scope.festivalsCons = data;
 		seguentPaginaFestivals();
-
-		// Paginacio: Disponible proximament.
-		// $scope.sliceIni = $scope.currentPage * $scope.pageSize;
-		/* var elemsUltimaPag = $scope.festivalsInici.length>$scope.pageSize?
-			$scope.pageSize:
-			$scope.festivalsInici.length % $scope.pageSize;
-		$scope.sliceFinal = $scope.currentPage + elemsUltimaPag;
-		console.log("sliceIni = " + $scope.sliceIni); 
-		console.log("sliceFinal = " + $scope.sliceFinal);
-		$scope.festivals = data.slice($scope.sliceIni,$scope.sliceFinal); */
 
 		// Agafar poblacions dels resultats de la cerca.
 		var poblacionsTAux = [];
@@ -74,13 +62,13 @@ function mainController($scope, $http) {
 			    poblacionsTable.push(poblacionsTAux[i]);
 			    poblacionsValors.push(valor);
 			}
-			// console.log(valor);
 		}
 		$scope.poblacions = poblacionsTable;
-	})
-	.error(function(data) {
-		console.log('Error: ' + json_data);
-	});
+	}
+
+	function getFestivalsError() {
+		console.log('Error getting festivals.');
+	}
 
 	// Carregar la pantalla seleccionada.
 	// titol -> Text a carregar com a títol de pantalla.
@@ -93,14 +81,14 @@ function mainController($scope, $http) {
 		}
 	}
 	
-	// Funció per a seleccionar festival del llistat
+	// Seleccionar festival del llistat
 	$scope.selectFestival = function(festival) {
 		$scope.detailFestival = festival;
 		$scope.selected = true;
-		console.log($scope.detailFestival, $scope.selected);
+		// console.log($scope.detailFestival, $scope.selected);
 	};
 	
-	// Funció que mostra totes les dades d'un festival seleccionat en un formulari editable.
+	// Mostrar totes les dades d'un festival seleccionat en un formulari editable.
 	$scope.detallFestival = function(festival) {
 		$scope.newFestival = $scope.detailFestival;
 		$scope.selected = true;
@@ -109,69 +97,66 @@ function mainController($scope, $http) {
 		$scope.titolVista = "Editar festival";
 
 		// Convertir data en el format que exigeixen els formularis HTML (yyyy-MM-dd).
-		// Atenció, que Javascript compta els mesos des de 0 (January - 0, February - 1, etc)
-		console.log("$scope.detailFestival.dataInici"+$scope.detailFestival.dataInici);
-		console.log("$scope.detailFestival.dataFi"+$scope.detailFestival.dataFi);
+		console.log("$scope.detailFestival.dataInici "+$scope.detailFestival.dataInici);
+		console.log("$scope.detailFestival.dataFi "+$scope.detailFestival.dataFi);
 		var partsI =$scope.detailFestival.dataInici.split('/');
 		var dataI = partsI[2]+'-'+partsI[1]+'-'+partsI[0];
 		var partsF =$scope.detailFestival.dataFi.split('/');
 		var dataF = partsI[2]+'-'+partsI[1]+'-'+partsI[0];
 		$scope.newFestival.dataInici=dataI;
 		$scope.newFestival.dataFi=dataF;
-		console.log("$scope.newFestival.dataInici"+$scope.newFestival.dataInici);
+		console.log("$scope.newFestival.dataInici "+$scope.newFestival.dataInici);
 	};
 	
-	// Función para editar los datos de un festival.
+	// Crea un nou festival a partir de les dades omplertes al formulari.
+	$scope.crearFestival = function() {
+		console.log("Creant Festival"+$scope.newFestival.dataInici);
+		$scope.newFestival=saveDatesFestival($scope.newFestival,$scope.newFestival.dataInici,$scope.newFestival.dataFi);
+		$scope.newFestival.id = $scope.festivalsInici.length+1;
+		console.log("$scope.newFestival.id="+$scope.newFestival.id);
+		$http.post('/api/festivals',$scope.newFestival)
+		.success(function(data) {
+			resetFestivalForm("Festival creat correctament.");
+				$http.get('/api/festivals')
+					.success(function(data) { getFestivalsSuccess(data); })
+					.error(getFestivalsError());
+		}).error(function(data) {
+			console.log('Error al crear festival: ' + data);
+		});
+	};
+
+	// Editar les dades d'un festival.
 	$scope.editarFestival = function(newFestival) {
-		console.log("Editant Festival"+$scope.newFestival.dataInici);
+		console.log("Editant Festival"+$scope.newFestival.id);
 		$scope.newFestival=saveDatesFestival($scope.newFestival,$scope.newFestival.dataInici,$scope.newFestival.dataFi);
 
 		$http.put('/api/festivals/' + $scope.newFestival.id, $scope.newFestival)
 		.success(function(data) {		
-			console.log("editarFestival-success");
-			resetFestivalForm();
+			resetFestivalForm("Festival actualitzat correctament.");
 		})
 		.error(function(data) {
-			console.log('Error al editar festival: ' + data);
+			console.log('Error al editar festival: ');
 		});
 	};
 
-	// Función para eliminar los datos de un festival.
+	// Elimina les dades d'un festival.
 	$scope.anularFestival = function(newFestival) {
 		console.log("Anular Festival "+$scope.newFestival.id);
 		var resposta = confirm("Segur que vols anular el festival ? Ja ho has comunicat a tots els assistents ? ");
 		if(resposta == true) {
 			$http.delete('/api/festivals/' + $scope.newFestival.id, $scope.newFestival)
 			.success(function(data) {		
-				console.log("anularFestival-success");
-				resetFestivalForm();
-			})
-			.error(function(data) {
-				console.log('Error al eliminar festival: ' + data);
+				resetFestivalForm("Festival eliminat correctament.");
+					$http.get('/api/festivals')
+						.success(function(data) { getFestivalsSuccess(data); })
+						.error(getFestivalsError());
+			}).error(function(data) {
+				console.log('Error al eliminar festival: ');
 			});
 		}
 	};
 	
-	// Funció que crea un nou festival a partir de les dades omplertes al formulari.
-	$scope.crearFestival = function() {
-		console.log("Creant Festival"+$scope.newFestival.dataInici);
-		$scope.newFestival=saveDatesFestival($scope.newFestival,$scope.newFestival.dataInici,$scope.newFestival.dataFi);
-		$http.post('/api/festivals',$scope.newFestival)
-		.success(function(data) {
-			console.log("crearFestival-success");
-			// Esborrem les dades del formulari i tornem a la vista de llista de concerts.
-			/* $scope.newFestival = {};
-			$scope.vista = 'llista';
-			$scope.titolVista = "Llista de concerts";			
-			$scope.festivals = data; */
-			resetFestivalForm();
-		})
-		.error(function(data) {
-			console.log('Error al crear festival: ' + data);
-		});
-	};
-	
-	// Función per a filtrar els festivals por criteris:
+	// Funció per a filtrar els festivals por criteris:
 	// 1. Per població
 	// filtreFestival.poblacio
 	// 2. Agafar només els gratuïts.
@@ -212,7 +197,7 @@ function mainController($scope, $http) {
 			var filterGratuits = filtreFestival.gratuits == true ? 
 				elem.preuGratuit == true :
 				elem.preuGratuit == true || elem.preuGratuit == false ;
-			// console.log(filterPoblacio + " " + filterGratuits);
+				// console.log(filterPoblacio + " " + filterGratuits);
 			return filterData && filterPoblacio && filterGratuits;
 		});
 		// Reiniciar la paginació amb la nova cerca.
@@ -224,12 +209,47 @@ function mainController($scope, $http) {
 		seguentPaginaFestivals();
 	};
 
-	// Esborrem les dades del formulari per crear/editar/anular festivals i tornem a la vista de la llista.
-	function resetFestivalForm() {
+	// Mostrem un missatge per confirmar la operació(eliminar,crear...); 
+	// esborrem les dades del formulari per crear/editar/anular festivals i tornem a la vista de la llista.
+	function resetFestivalForm(missatge_ok) {
+		alert(missatge_ok);
+		console.log(missatge_ok);
 		$scope.newFestival = {};
+		$scope.detailFestival = {};
 		$scope.vista = 'llista';
 		$scope.titolVista = "Llista de concerts";			
-		// $scope.festivals = data;
+	}
+	
+	// Anem mostrant els registres al llistat; pàgina en pagina.
+	function seguentPaginaFestivals() {
+		$scope.paginaActual++;
+		var pagFinal = $scope.paginaActual * $scope.numRegsPagina;
+		$scope.festivals = $scope.festivalsCons.slice(0,pagFinal);
+		// console.log("ELEMS??"+$scope.festivals[0])
+	} 
+
+	function saveDatesFestival(newFestival,dateI,dateF) {
+		console.log(newFestival.dataInici);
+		console.log(newFestival.dataFi);
+		newFestival.dataInici = saveDateFestival(dateI);
+		if(newFestival.dataFi!= null || newFestival.dataFi !== undefined  ) {
+			newFestival.dataFi = saveDateFestival(dateF);
+		}
+		return newFestival;
+	}
+
+	function saveDateFestival(date) {
+		var filteredDate = date.split('-');
+		/*  
+		Potser cal tractar '0' sobrants (hour < 10) ? '0' + hour: hour) + ':'
+		var day = parseInt(filteredDate[2])>10?filteredDate[2]:'0'+filteredDate[2];
+		console.log(day); 
+		var month1 = parseInt(filteredDate[1])++;
+		console.log(month1); 
+		var month =  parseInt(filteredDate[1])>10?parseInt(filteredDate[1]):'0'+parseInt(filteredDate[1]);
+		*/
+		var newDate = filteredDate[2]+"/"+(filteredDate[1])+"/"+filteredDate[0];
+		return newDate;
 	}
 
 	// Funcions pel tractament de dates (proximament)
@@ -244,31 +264,4 @@ function mainController($scope, $http) {
 	function dateRegToForm(date) {
 		return '';
 	} */
-
-	function saveDatesFestival(newFestival,dateI,dateF) {
-		newFestival.dataInici = saveDateFestival(dateI);
-		newFestival.dataFi = saveDateFestival(dateF);
-		return newFestival;
-	}
-
-	// Tractar '0' sobrants (hour < 10) ? '0' + hour: hour) + ':'
-	function saveDateFestival(date) {
-		var filteredDate = date.split('-');
-		console.log(filteredDate);
-		/* var day = parseInt(filteredDate[2])>10?filteredDate[2]:'0'+filteredDate[2];
-		console.log(day); */
-		/* var month1 = parseInt(filteredDate[1])++;
-		console.log(month1); */
-		// var month =  parseInt(filteredDate[1])>10?parseInt(filteredDate[1]):'0'+parseInt(filteredDate[1]);
-		var newDate = filteredDate[2]+"/"+(filteredDate[1])+"/"+filteredDate[0];
-		return newDate;
-	}
-	
-	// Anem mostrant els registres al llistat; pàgina en pagina.
-	function seguentPaginaFestivals() {
-		$scope.paginaActual++;
-		var pagFinal = $scope.paginaActual * $scope.numRegsPagina;
-		$scope.festivals = $scope.festivalsCons.slice(0,pagFinal);
-		// console.log("ELEMS??"+$scope.festivals[0])
-	} 
 }
