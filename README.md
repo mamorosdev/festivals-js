@@ -76,18 +76,26 @@ Falten dues grans millores a l'arquitectura per a que l'aplicació sigui útil.
 
 ### Història d'usuari en procés.
 
-#### Versió beta1 (febrer 2018)
-És innaceptable permetre a qualsevol usuari. Com que no preveig implantar-la inmediatament, vull tenir una versió de només lectura de l'aplicació. Només l'actualitzarà un tècnic amb accés al codi font modificant el fitxer JSON corresponent.
-És a dir, la beta1 tindrà les següents històries, ja implementades:
-* HU1. Com a visitant vull veure en que consisteix la pagina, qui l'esta fent, novetats,…
-* HU2. Com a visitant vull veure un llistat de tots els pròxims concerts ordenats per data.
-* HU8 Vull trobar festivals a la localitat que indiqui
-* HU9 Vull filtrar els festivals que siguin gratuïts.
-* HU16 Obtenir el llistat de concerts paginat si és llarg (pex de 10 en 10)
+#### Versió aplha3 (febrer 2018)
+És innaceptable permetre a qualsevol usuari editar i anul.lar concerts que ha creat una altra persona. 
+D'altra banda, cal corregir uns quants bugs d'usabilitat.
+~~Com que no preveig implantar-la inmediatament, vull tenir una versió de només lectura de l'aplicació. Només l'actualitzarà un tècnic amb accés al codi font modificant el fitxer JSON corresponent.~~
+És a dir, la alpha3 tindrà les següents històries, ja implementades:
 
-I les següents:
-* HU18. Com a administrador vull gestionar els concerts editant el fitxer on estan allotjats actualment.
-* HU19. Vull afegir a llista de concerts els que considero més interessants 2018.
+Podré assumir totes les històries d'usuari i la autenticació:
+
+    HU1. Com a visitant vull veure en que consisteix la pagina, qui l'esta fent, novetats,…
+    HU2. Com a visitant vull veure un llistat de tots els pròxims concerts ordenats per data
+    HU3. Com a usuari registrat vull crear una trobada a un concert
+    HU4. Com a usuari registrat vull poder editar l'event abans que comenci.
+    HU5 Com a usuari registrat, vull anul•lar un concert abans que comenci.
+    HU6 Com a usuari registrat vull que existeix un sistema d'autenticació, amb almenys un nom d'usuari i contrassenya, per tal que nomésjo pugui modificar i eliminar els festivals que he creat.
+    HU8 Vull trobar festivals a la localitat que indiqui
+    HU9 Vull filtrar els festivals que siguin gratuïts.
+    HU16 Obtenir el llistat de concerts paginat si és llarg (pex de 10 en 10)
+    HU18. Com a administrador vull gestionar els concerts editant el fitxer on estan allotjats actualment per tal d'afegir a llista de concerts els que considero més interessants 2018.
+    HU11-13 Si dóna temps, les històries 11,12; sobre formularis de reclamacions d'ús.
+
 
 ### Històries d'usuari implementades.
 
