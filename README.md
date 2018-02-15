@@ -99,11 +99,11 @@ Falten dues grans millores a l'arquitectura per a que l'aplicació sigui útil.
 ### Història d'usuari en procés.
 
 #### Versió aplha3 (febrer 2018)
-És innaceptable permetre a qualsevol usuari editar i anul.lar concerts que ha creat una altra persona. 
+És innaceptable permetre a qualsevol usuari editar i anul.lar concerts que ha creat una altra persona; i per solucionar cal implementar un mecanisme d'autenticació d'usuaris. 
+D'altra banda, caldrà corregir errors menors que s'han detectat. 
+Finalment, com que ja fa temps que no s'usa caldrà inserir els concerts que venen el 2018, i encara més, comprometre's a actualitzar la llista de concerts, a ser el primer en fer us de l'aplicació.
 ~~Com que no preveig implantar-la inmediatament, vull tenir una versió de només lectura de l'aplicació. Només l'actualitzarà un tècnic amb accés al codi font modificant el fitxer JSON corresponent.~~
 És a dir, la alpha3 tindrà les següents històries, ja implementades:
-
-Podré assumir totes les històries d'usuari i la autenticació:
 
     HU1. Com a visitant vull veure en que consisteix la pagina, qui l'esta fent, novetats,…
     HU2. Com a visitant vull veure un llistat de tots els pròxims concerts ordenats per data
@@ -114,14 +114,14 @@ Podré assumir totes les històries d'usuari i la autenticació:
     HU8 Vull trobar festivals a la localitat que indiqui
     HU9 Vull filtrar els festivals que siguin gratuïts.
     HU16 Obtenir el llistat de concerts paginat si és llarg (pex de 10 en 10)
-    HU18. Com a administrador vull gestionar els concerts editant el fitxer on estan allotjats actualment per tal d'afegir a llista de concerts els que considero més interessants 2018.
+    HU18. Com a administrador m'he de comprometre a actualitzar periòdicament la llista de concerts amb els millors que venen aquest 2018.
     HU11-13 Si dóna temps, les històries 11,12; sobre formularis de reclamacions d'ús.
 
 D'altra banda, inclourà la correcció d'uns quants bugs d'usabilitat:
-[]TA3-001 Revisar secció pàgina: 'Com funciona' 
-[]TA3-002 Que només es mostrin els pròxims concerts per defecte, no els antics.
-[]TA3-003 Falta botó retornar a la pantalla de detall de concerts.
-[]TA3-004 Nous pròxims concerts. Crear noves entrades al festivals.json
+- [ ] TA3-001 Revisar secció pàgina: 'Com funciona' 
+- [ ] TA3-002 Que només es mostrin els pròxims concerts per defecte, no els antics.
+- [ ] TA3-003 Falta botó retornar a la pantalla de detall de concerts.
+- [ ] TA3-004 Nous pròxims concerts. Crear noves entrades al festivals.json
 
 Nota: El mecanisme d'autenticació serà simple, i encara no és apte per un sistema en producció professional.
 Tindrem 4 usuaris creats a mà, en un fitxer json al servidor. No se'n poden registrar més des de la aplicació (és a dir, no hi haurà un formulari de logon->alta ni de logoff->baixa)
